@@ -22,3 +22,15 @@ product_schema = DataFrameSchema({
     "size_availability": Column(str, nullable=True),
     "size_chart": Column(str, nullable=True),
 })
+
+//
+import pandas as pd
+from schemas.product_schema import product_schema
+
+def ingest_product(file_path):
+    print(f"Ingesting file: {file_path}")
+    df = pd.read_excel(file_path)
+    validated_df = product_schema.validate(df)
+    validated_df.to_csv("staging/product_clean.csv", index=False)
+    print("✅ Ingestion complete. Clean file saved to staging.")
+//
