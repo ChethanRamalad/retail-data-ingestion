@@ -18,3 +18,14 @@ brand_comparison_schema = DataFrameSchema({
     "better_brand_by_rating": Column(str, Check.isin(["A", "B", "Equal"]), nullable=True),
 })
 
+//ingestion script
+import pandas as pd
+from schemas.brand_comparison_schema import brand_comparison_schema
+
+def ingest_brand_comparison(file_path):
+    print(f"Ingesting file: {file_path}")
+    df = pd.read_excel(file_path)
+    validated_df = brand_comparison_schema.validate(df)
+    validated_df.to_csv("staging/brand_comparison_clean.csv", index=False)
+    print("✅ Brand Comparison Data Validated and Saved.")
+//
